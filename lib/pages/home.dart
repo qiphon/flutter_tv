@@ -45,6 +45,9 @@ class _HomeWithNavState extends State<HomeWithNav> {
         ),
         body: PageView(
           controller: _pageController,
+          onPageChanged: (val) => setState(() {
+            _currentTab = val;
+          }),
           children: <Widget>[Homepage(), SettingsPage()],
         ));
   }
