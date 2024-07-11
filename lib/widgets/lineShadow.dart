@@ -1,9 +1,8 @@
-/**
+///
 /// @file 提供像 CSS 那样的 shadow
 /// 目前只有直线 shadow
- */
-
-import 'dart:developer';
+///
+library;
 
 import 'package:flutter/material.dart';
 
@@ -36,39 +35,58 @@ class RectClipper extends CustomClipper<Rect> {
 }
 
 class LineShadow extends StatelessWidget {
-  final List<BoxShadow> shadow;
+  final List<BoxShadow>? shadow;
   final Direction shadowDirection;
   final Widget child;
 
-  static const List<BoxShadow> defaultShadow = [
-    BoxShadow(
-        blurStyle: BlurStyle.outer,
-        blurRadius: 10,
-        spreadRadius: 1,
-        offset: Offset(0, -1),
-        color: Color.fromRGBO(232, 40, 40, 1))
-  ];
+  List<BoxShadow> getDefaultShadow(Direction direction) {
+    Map<Direction, List<double>> directionMap = {
+      Direction.left: [-2, 0],
+      Direction.right: [2, 0],
+      Direction.bottom: [0, 2],
+      Direction.top: [0, -2],
+    };
+    final offetArr = directionMap[direction] ?? [0, 0];
+    return [
+      BoxShadow(
+          blurStyle: BlurStyle.outer,
+          blurRadius: 20,
+          spreadRadius: 1,
+          offset: Offset(offetArr[0], offetArr[1]),
+          color: Color.fromARGB(255, 82, 82, 84))
+    ];
+  }
 
-  const LineShadow(
-      {super.key,
-      this.shadow = defaultShadow,
-      required this.child,
-      this.shadowDirection = Direction.top});
+  const LineShadow({
+    super.key,
+    this.shadowDirection = Direction.top,
+    this.shadow,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
-    log('line shadow build');
     return ClipRect(
         clipBehavior: Clip.antiAlias,
         clipper: RectClipper(direction: shadowDirection),
         child: _renderLeftAndRight(_renderTopAndBottom(child)));
   }
 
-  Widget _renderShadowItem() {
+  Widget _renderShadowItem(Direction direction) {
+    if (direction != shadowDirection) {
+      return const SizedBox(
+        width: 0,
+        height: 0,
+      );
+    }
+
+    List<BoxShadow> usedShadow = shadow ?? getDefaultShadow(shadowDirection);
+
     bool isLeftAndRight =
-        shadowDirection == Direction.left || shadowDirection == Direction.right;
+        direction == Direction.left || direction == Direction.right;
     return Container(
-      decoration: BoxDecoration(color: Colors.transparent, boxShadow: shadow),
+      decoration:
+          BoxDecoration(color: Colors.transparent, boxShadow: usedShadow),
       width: isLeftAndRight ? 1 : double.infinity,
       height: isLeftAndRight ? double.infinity : 1,
     );
@@ -76,13 +94,21 @@ class LineShadow extends StatelessWidget {
 
   Widget _renderTopAndBottom(Widget child) {
     return Column(
-      children: [_renderShadowItem(), child, _renderShadowItem()],
+      children: [
+        _renderShadowItem(Direction.top),
+        Expanded(child: child),
+        _renderShadowItem(Direction.bottom)
+      ],
     );
   }
 
   Widget _renderLeftAndRight(Widget child) {
     return Row(
-      children: [_renderShadowItem(), child, _renderShadowItem()],
+      children: [
+        _renderShadowItem(Direction.left),
+        Expanded(child: child),
+        _renderShadowItem(Direction.right)
+      ],
     );
   }
 }
