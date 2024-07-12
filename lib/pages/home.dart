@@ -15,7 +15,7 @@ class HomeWithNav extends StatefulWidget {
 
 class _HomeWithNavState extends State<HomeWithNav> {
   int _currentTab = 0;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
 
   void _onTabChange(int value) {
     _pageController.animateToPage(value,
