@@ -1,8 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:tv_flutter/pages/homePage.dart';
 import 'package:tv_flutter/pages/settings.dart';
+
+typedef ChangeHomeNav = void Function(TabTitle page);
 
 class HomeWithNav extends StatefulWidget {
   const HomeWithNav({super.key});
@@ -24,6 +24,14 @@ class _HomeWithNavState extends State<HomeWithNav> {
       _currentTab = value;
       _pageController.jumpToPage(value);
     });
+  }
+
+  void _onPageChange(TabTitle page) {
+    if (page == TabTitle.home) {
+      _pageController.jumpToPage(0);
+    } else if (page == TabTitle.settings) {
+      _pageController.jumpToPage(1);
+    }
   }
 
   @override
@@ -48,7 +56,10 @@ class _HomeWithNavState extends State<HomeWithNav> {
           onPageChanged: (val) => setState(() {
             _currentTab = val;
           }),
-          children: <Widget>[Homepage(), SettingsPage()],
+          children: <Widget>[
+            Homepage(changeNav: _onPageChange),
+            SettingsPage()
+          ],
         ));
   }
 }

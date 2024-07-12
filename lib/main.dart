@@ -7,13 +7,16 @@ import 'package:wakelock/wakelock.dart';
 import 'pages/home.dart';
 
 void main() {
-  // runApp(const MyApp());
-  FlutterError.onError = (details, {bool forceReport = false}) {
+  // runApp(const App());
+  FlutterError.onError = (details, {bool forceReport = true}) {
+    log('err ----- onError');
     log('$details');
   };
 
   runZonedGuarded(() => runApp(const App()), (err, stack) {
+    log('err ----- runZonedGuarded');
     log('$err');
+    log(stack.toString());
   });
 }
 
@@ -29,6 +32,9 @@ class App extends StatelessWidget {
       title: 'TV lives',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: Colors.white,
+        ),
       ),
       home: const HomeWithNav(),
     );
