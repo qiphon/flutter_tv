@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 import 'package:tv_flutter/api/weather.dart';
@@ -57,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Expanded(
                         child: _input(
                           key: InputKey.weatherAddr,
-                          defaultSysCfg().weatherAddr,
+                          cfg!.weatherAddr,
                           placeholder: '首页的天气信息获取地址, 默认北京',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -71,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     FlexWithGaps(children: [
                       _renderText('配置地址'),
                       Expanded(
-                        child: _input(defaultSysCfg().playAddr,
+                        child: _input(cfg!.playAddr,
                             placeholder: '请输入配置地址url',
                             keyboardType: TextInputType.url,
                             key: InputKey.playAddr, validator: (String? val) {

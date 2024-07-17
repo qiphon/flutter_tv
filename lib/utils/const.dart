@@ -21,7 +21,7 @@ class defaultSysCfg {
       {this.playAddr = 'https://盒子迷.top/禁止贩卖', this.weatherAddr = '北京'});
 
   factory defaultSysCfg.fromJson(Map<String, dynamic> data) {
-    if (!data['weatherAddr'] || !data['playAddr']) {
+    if (!data.containsKey('weatherAddr') || !data.containsKey('playAddr')) {
       throw ArgumentError('Missing defaultSysCfg args');
     }
 
@@ -33,7 +33,9 @@ class defaultSysCfg {
     return localStore.create(LocalStoreKeyType.systemConfig).then((store) {
       String? val = store.getValue();
       if (val != null && val.isNotEmpty) {
-        return defaultSysCfg.fromJson(jsonDecode(val));
+        dynamic decodeVal = jsonDecode(val);
+        final res = defaultSysCfg.fromJson(decodeVal);
+        return res;
       }
       return null;
     }).catchError((onError) {
@@ -42,9 +44,8 @@ class defaultSysCfg {
   }
 
   Future<dynamic> setValues(defaultSysCfg config) {
-    String cfgStr = jsonEncode(config);
     return localStore.create(LocalStoreKeyType.systemConfig).then((store) {
-      store.setValue(cfgStr);
+      store.setValue(config);
     });
   }
 
