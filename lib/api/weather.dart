@@ -29,6 +29,7 @@ class Weather {
   /// 天气预警
   final String? weatherAlert;
   final int updateTime;
+  final String cityName;
 
   Weather(
       {this.airQuality,
@@ -38,6 +39,7 @@ class Weather {
       required this.temperature,
       required this.weather,
       this.weatherAlert,
+      required this.cityName,
       required this.week});
 
   factory Weather.fromJson(Map<String, dynamic> data) {
@@ -47,6 +49,7 @@ class Weather {
         !data.containsKey('week') ||
         !data.containsKey('image') ||
         !data.containsKey('updateTime') ||
+        !data.containsKey('cityName') ||
         !data.containsKey('temperature')) {
       throw ArgumentError('Missing required fields in the JSON data');
     }
@@ -59,6 +62,7 @@ class Weather {
       image: data['image']!,
       temperature: data['temperature']!,
       airQuality: data['airQuality'],
+      cityName: data['cityName'],
       weatherAlert: data['weatherAlert'],
       updateTime: data['updateTime'],
     );
@@ -74,6 +78,7 @@ class Weather {
       'weather': weather,
       'weatherAlert': weatherAlert,
       'week': week,
+      'cityName': cityName
     };
   }
 
@@ -140,7 +145,8 @@ class Weather {
                 week: todayItem.querySelector('.mh-week')?.text ?? '',
                 airQuality: airQuality,
                 weatherAlert: weatherAlert,
-                updateTime: DateTime.now().millisecondsSinceEpoch);
+                updateTime: DateTime.now().millisecondsSinceEpoch,
+                cityName: addr);
           }).toList();
           await store.setValue(list7Day);
           return list7Day;

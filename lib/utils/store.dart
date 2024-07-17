@@ -7,6 +7,7 @@ library;
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tv_flutter/utils/const.dart';
 
 class localStore<Value> {
   String keyName;
@@ -17,8 +18,9 @@ class localStore<Value> {
     this.keyName,
   ) {}
 
-  static Future<localStore<Value>> create<Value>(keyName) async {
-    final store = localStore<Value>._internal(keyName);
+  static Future<localStore<Value>> create<Value>(
+      LocalStoreKeyType keyName) async {
+    final store = localStore<Value>._internal(keyName.toString());
     final s = await SharedPreferences.getInstance();
     store.prefs = s;
     return store;

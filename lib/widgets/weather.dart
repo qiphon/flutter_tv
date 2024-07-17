@@ -23,9 +23,7 @@ class _WeatherWidget extends State<WeatherWidget> {
 
   @override
   initState() {
-    localStore
-        .create<List<Weather>>(LocalStoreKeyType.weather.toString())
-        .then((w) {
+    localStore.create<List<Weather>>(LocalStoreKeyType.weather).then((w) {
       String? storeWeather = w.getValue();
       bool isNeedFetch = storeWeather == null;
       if (storeWeather != null) {
@@ -58,8 +56,9 @@ class _WeatherWidget extends State<WeatherWidget> {
             fetchResult = FetchResult.fetching;
           }
         });
-
-        Weather.getWeather(store: w).then((fetchRes) {
+        Weather.getWeather(
+          store: w,
+        ).then((fetchRes) {
           if (fetchRes == null) {
             setState(() {
               fetchResult = FetchResult.error;
@@ -105,7 +104,8 @@ class _WeatherWidget extends State<WeatherWidget> {
                       .toLocal()
                       .toString()
                       .substring(0, 16)),
-                  _TextSmall('北京今天天气'),
+                  _TextSmall(
+                      '${weatherDatas.first.cityName ?? defaultSysCfg().weatherAddr}今天天气'),
                   _TextSmall('空气质量：${weatherDatas.first.airQuality ?? '无数据'}'),
                   _TextSmall(
                       '天气预警：${weatherDatas.first.weatherAlert ?? '无数据'}'),
