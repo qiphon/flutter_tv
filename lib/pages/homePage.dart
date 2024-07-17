@@ -60,12 +60,6 @@ class _HomepageState extends State<Homepage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-          GestureDetector(
-            onTap: () => changeTtt(_activeTab + 1),
-            child: Container(
-              child: Text('change tab ${_activeTab}'),
-            ),
-          ),
           Expanded(
               child: Tabs(
                   iconSize: 40,
