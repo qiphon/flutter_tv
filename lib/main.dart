@@ -2,18 +2,24 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:tv_flutter/api/index.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'pages/home.dart';
 
-void main() {
+void main() async {
   // runApp(const App());
-  FlutterError.onError = (details, {bool forceReport = true}) {
-    log('err ----- onError');
-    log('$details');
-  };
-
-  runZonedGuarded(() => runApp(const App()), (err, stack) {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterError.onError = (
+      details,
+    ) {
+      log('err ----- onError');
+      log('$details');
+    };
+    addRequestCatch();
+    return runApp(const App());
+  }, (err, stack) async {
     log('err ----- runZonedGuarded');
     log('$err');
     log(stack.toString());

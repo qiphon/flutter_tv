@@ -1,108 +1,93 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:tv_flutter/widgets/BoxShadow.dart';
+import 'package:tv_flutter/pages/home.dart';
+import 'package:tv_flutter/widgets/lineShadow.dart';
 import 'package:tv_flutter/widgets/Tabs.dart';
-// import 'package:tv_flutter/pages/settings.dart';
+import 'package:tv_flutter/widgets/weather.dart';
+
+enum TabTitle {
+  home,
+  live,
+  cctv,
+  settings,
+}
+
+const defaultTabTitleStr = '首页';
+const titleMap = {
+  TabTitle.home: defaultTabTitleStr,
+  TabTitle.live: '直播',
+  TabTitle.cctv: '央视',
+  TabTitle.settings: '设置',
+};
+
+String getTabTitle(TabTitle titleEn) {
+  final res = titleMap[titleEn];
+  return res ?? defaultTabTitleStr;
+}
 
 class Homepage extends StatefulWidget {
+  final ChangeHomeNav? changeNav;
+  const Homepage({super.key, this.changeNav});
+
   @override
   State<StatefulWidget> createState() {
     return _HomepageState();
   }
 }
 
-class _HomepageState extends State<Homepage>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _HomepageState extends State<Homepage> {
+  int _activeTab = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+  _HomepageState();
+
+  void _onTabChange(int index) {
+    if (TabTitle.values[index] == TabTitle.settings) {
+      if (widget.changeNav != null) {
+        widget.changeNav!(TabTitle.settings);
+      }
+    }
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  void onTabChange() {
-    var a;
-    // a = this;
-    // a = null;
-    // a = 2;
-    a = 'str';
-
-    Object? a1;
-    a1 = this;
-    a1 = 1;
-    a1 = 'str';
-    a1 = null;
-    dynamic a2;
-    a2 = this;
-    a2 = 1;
-    a2 = 'str';
-    a2 = null;
-    log('tab change ${a}');
+  void changeTtt(int val) {
+    setState(() {
+      _activeTab = val > 3 ? 0 : val;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    log('render home page');
     return SafeArea(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-          Text('data'),
-          Text('2'),
           GestureDetector(
-            onTap: onTabChange,
+            onTap: () => changeTtt(_activeTab + 1),
             child: Container(
-              child: Text('containser'),
+              child: Text('change tab ${_activeTab}'),
             ),
           ),
-          Container(child: Text(' tabs 顶部')),
           Expanded(
               child: Tabs(
-                  // tabPosition: TabPosition.left,
-                  pages: Expanded(
-                      child: Container(
+                  iconSize: 40,
+                  tabSpace: 130,
+                  onTabChange: _onTabChange,
+                  pages: const Expanded(
+                      child: SizedBox(
                     width: double.infinity,
                     height: double.infinity,
                     child: LineShadow(
-                      // shadowDirection: Direction.top,
-                      child: Text('pages'),
-                    ),
-                    // child: Text('pages'),
-                    // Column(children: [
-                    //   ClipRect(
-                    //     clipBehavior: Clip.antiAlias,
-                    //     clipper: RectClipper(direction: Direction.top),
-                    //     child: Container(
-                    //       width: double.infinity,
-                    //       height: 1,
-                    //       decoration: const BoxDecoration(
-                    //           color: Colors.transparent,
-                    //           boxShadow: [
-                    //             BoxShadow(
-                    //                 blurStyle: BlurStyle.outer,
-                    //                 blurRadius: 10,
-                    //                 spreadRadius: 1,
-                    //                 offset: Offset(0, -1),
-                    //                 color: Color.fromRGBO(232, 40, 40, 1))
-                    //           ]),
-                    //     ),
-                    //   ),
-                    //   Text('pages')
-                    // ])),
+                        shadowDirection: Direction.top, child: WeatherWidget()),
                   )),
-                  tabs: const [
-                TabItem(title: '直播', icon: Icons.home),
-                TabItem(title: '央视', icon: Icons.home)
+                  tabs: [
+                TabItem(
+                    title: getTabTitle(TabTitle.home),
+                    icon: Icons.home_outlined),
+                TabItem(title: getTabTitle(TabTitle.live), icon: Icons.live_tv),
+                TabItem(
+                    title: getTabTitle(TabTitle.cctv), icon: Icons.tv_sharp),
+                TabItem(
+                    title: getTabTitle(TabTitle.settings),
+                    icon: Icons.settings_outlined)
               ])),
         ]));
   }
