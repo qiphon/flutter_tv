@@ -23,9 +23,10 @@ class _WeatherWidget extends State<WeatherWidget> {
 
   @override
   initState() {
-    localStore.create<List<Weather>>(LocalStoreKeyType.weather).then((w) {
+    localStore.create<List<Weather>>(LocalStoreKeyType.weather).then((w) async {
       String? storeWeather = w.getValue();
       bool isNeedFetch = storeWeather == null;
+      final cfg = await defaultSysCfg().getValues();
       if (storeWeather != null) {
         try {
           List<Weather> wea =
@@ -36,6 +37,10 @@ class _WeatherWidget extends State<WeatherWidget> {
               .subtract(const Duration(minutes: 30))
               .isAfter(
                   DateTime.fromMillisecondsSinceEpoch(wea.first.updateTime));
+
+          isNeedFetch = isNeedFetch == false
+              ? false
+              : !(cfg.weatherAddr == wea.first.cityName);
 
           if (!isNeedFetch) {
             setState(() {
@@ -56,9 +61,8 @@ class _WeatherWidget extends State<WeatherWidget> {
             fetchResult = FetchResult.fetching;
           }
         });
-        Weather.getWeather(
-          store: w,
-        ).then((fetchRes) {
+        Weather.getWeather(store: w, cityName: cfg.weatherAddr)
+            .then((fetchRes) {
           if (fetchRes == null) {
             setState(() {
               fetchResult = FetchResult.error;

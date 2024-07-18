@@ -29,7 +29,7 @@ class defaultSysCfg {
         playAddr: data['playAddr'], weatherAddr: data['weatherAddr']);
   }
 
-  Future<defaultSysCfg?> getValues() {
+  Future<defaultSysCfg> getValues() {
     return localStore.create(LocalStoreKeyType.systemConfig).then((store) {
       String? val = store.getValue();
       if (val != null && val.isNotEmpty) {
@@ -37,9 +37,9 @@ class defaultSysCfg {
         final res = defaultSysCfg.fromJson(decodeVal);
         return res;
       }
-      return null;
+      return defaultSysCfg();
     }).catchError((onError) {
-      return null;
+      return defaultSysCfg();
     });
   }
 

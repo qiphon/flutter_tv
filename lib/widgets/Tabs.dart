@@ -55,26 +55,12 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  int _currentTab = 0;
   Color primaryColor = Colors.blue;
-
-  // dart 无法监听父级数据变化同步到当前值
-  // @override
-  // void didUpdateWidget(covariant Tabs oldWidget) {
-  //   // TODO: implement didUpdateWidget
-  //   super.didUpdateWidget(oldWidget);
-  //   // if (widget.activeTab != _currentTab) {
-  //   // _onTabChange(widget.activeTab);
-  //   // }
-  // }
 
   void _onTabChange(int value) {
     if (widget.onTabChange != null) {
       widget.onTabChange!(value);
     }
-    setState(() {
-      _currentTab = value;
-    });
   }
 
   @override
@@ -87,7 +73,8 @@ class _TabsState extends State<Tabs> {
   Widget _renderText(String text, int index) {
     return Text(
         style: TextStyle(
-            fontSize: 24, color: _currentTab == index ? primaryColor : null),
+            fontSize: 24,
+            color: widget.activeTab == index ? primaryColor : null),
         text);
   }
 
@@ -96,21 +83,20 @@ class _TabsState extends State<Tabs> {
     final itemLen = widget.tabs.length;
     for (int index = 0; index < itemLen; index++) {
       final item = widget.tabs[index];
-      result.add(Container(
-          child: GestureDetector(
-              onTap: () => _onTabChange(index),
-              child: Flex(
-                direction: widget.tabPosition == TabPosition.top
-                    ? Axis.vertical
-                    : Axis.horizontal,
-                children: [
-                  Icon(
-                      size: widget.iconSize,
-                      color: _currentTab == index ? primaryColor : null,
-                      item.icon),
-                  _renderText(item.title, index)
-                ],
-              ))));
+      result.add(GestureDetector(
+          onTap: () => _onTabChange(index),
+          child: Flex(
+            direction: widget.tabPosition == TabPosition.top
+                ? Axis.vertical
+                : Axis.horizontal,
+            children: [
+              Icon(
+                  size: widget.iconSize,
+                  color: widget.activeTab == index ? primaryColor : null,
+                  item.icon),
+              _renderText(item.title, index)
+            ],
+          )));
       if (index < itemLen - 1) {
         result.add(SizedBox(
           width: widget.tabSpace,
@@ -124,11 +110,7 @@ class _TabsState extends State<Tabs> {
     if (widget.tabPosition == TabPosition.top) {
       return Row(children: _renderTabItemInner());
     }
-    return Column(children: [
-      Container(
-        child: Column(children: _renderTabItemInner()),
-      )
-    ]);
+    return Column(children: [Column(children: _renderTabItemInner())]);
   }
 
   Widget _runderTabWithPosition() {

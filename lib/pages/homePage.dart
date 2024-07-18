@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tv_flutter/pages/home.dart';
+import 'package:tv_flutter/widgets/cctv.dart';
 import 'package:tv_flutter/widgets/lineShadow.dart';
 import 'package:tv_flutter/widgets/Tabs.dart';
 import 'package:tv_flutter/widgets/weather.dart';
@@ -39,17 +40,33 @@ class _HomepageState extends State<Homepage> {
 
   _HomepageState();
 
+  @override
+  void initState() {
+    setState(() {
+      _activeTab = 0;
+    });
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant Homepage oldWidget) {
+    setState(() {
+      _activeTab = 0;
+    });
+    super.didUpdateWidget(oldWidget);
+  }
+
   void _onTabChange(int index) {
     if (TabTitle.values[index] == TabTitle.settings) {
       if (widget.changeNav != null) {
         widget.changeNav!(TabTitle.settings);
       }
+    } else if (TabTitle.values[index] == TabTitle.cctv) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CCTV()));
+      return;
     }
-  }
-
-  void changeTtt(int val) {
     setState(() {
-      _activeTab = val > 3 ? 0 : val;
+      _activeTab = index;
     });
   }
 
@@ -62,6 +79,7 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
           Expanded(
               child: Tabs(
+                  activeTab: _activeTab,
                   iconSize: 40,
                   tabSpace: 130,
                   onTabChange: _onTabChange,

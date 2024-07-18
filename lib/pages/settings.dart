@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     defaultSysCfg().getValues().then((val) {
       setState(() {
-        cfg = val ?? defaultSysCfg();
+        cfg = val;
       });
     });
 
