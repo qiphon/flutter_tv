@@ -1,7 +1,7 @@
 import 'dart:developer';
 
+import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
 import 'package:tv_flutter/pages/homePage.dart';
 import 'package:tv_flutter/pages/settings.dart';
 
@@ -60,22 +60,17 @@ class _HomeWithNavState extends State<HomeWithNav> {
           setState(() {
             isCanQuit = true;
           });
-          Toastification().show(
-              alignment: Alignment.center,
-              title: const Text('再次返回即可退出'),
-              applyBlurEffect: true,
-              closeOnClick: true,
-              style: ToastificationStyle.simple,
-              autoCloseDuration: const Duration(seconds: 2),
-              callbacks:
-                  ToastificationCallbacks(onAutoCompleteCompleted: (val) {
-                Future.delayed(const Duration(seconds: 1)).then((v) {
-                  setState(() {
-                    isCanQuit = false;
-                  });
+          BrnToast.show(
+            '再次返回即可退出',
+            context,
+            onDismiss: () {
+              Future.delayed(const Duration(seconds: 1)).then((v) {
+                setState(() {
+                  isCanQuit = false;
                 });
-              }),
-              showProgressBar: true);
+              });
+            },
+          );
         },
         child: Scaffold(
             bottomNavigationBar: BottomNavigationBar(

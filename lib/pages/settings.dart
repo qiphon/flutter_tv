@@ -1,5 +1,5 @@
+import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
-import 'package:toastification/toastification.dart';
 import 'package:tv_flutter/api/weather.dart';
 import 'package:tv_flutter/utils/const.dart';
 import 'package:tv_flutter/utils/store.dart';
@@ -107,16 +107,8 @@ class _SettingsPageState extends State<SettingsPage> {
             weatherAddr: modifiedVal!.weatherAddr);
       });
       defaultSysCfg().setValues(modifiedVal!).then((onValue) {
-        toastification.show(
-          context: context,
-          type: ToastificationType.success,
-          style: ToastificationStyle.simple,
-          title: const Text(
-            '保存成功！',
-          ),
-          alignment: Alignment.center,
-          autoCloseDuration: const Duration(seconds: 4),
-        );
+        BrnToast.show('保存成功！', context);
+
         if (!isSameCity) {
           localStore
               .create<List<Weather>>(LocalStoreKeyType.weather)

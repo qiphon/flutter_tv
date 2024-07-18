@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:tv_flutter/api/index.dart';
 import 'package:wakelock/wakelock.dart';
-import 'package:toastification/toastification.dart';
 
 import 'pages/home.dart';
 
@@ -19,7 +18,7 @@ void main() async {
       log('$details');
     };
     addRequestCatch();
-    return runApp(const ToastificationWrapper(child: App()));
+    return runApp(const App());
   }, (err, stack) async {
     log('err ----- runZonedGuarded');
     log('$err');

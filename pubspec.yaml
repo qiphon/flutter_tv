@@ -40,8 +40,8 @@ dependencies:
   shared_preferences: ^2.2.3
   html: ^0.15.4
   dio: ^5.5.0+1
-  toastification: ^2.0.0
   webview_flutter: ^4.8.0
+  bruno: ^3.4.3
 
 dev_dependencies:
   flutter_test:
