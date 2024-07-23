@@ -1,10 +1,11 @@
 ///
 /// @file 自定义 tab ，暂时只做 tab 顶部切换的样式
-///
+/// 这个 tab 只是为测试封装组件而写，以后的组件使用 bruno 中的即可
 ///
 library;
 
 import 'package:flutter/material.dart';
+import 'package:tv_flutter/widgets/flexWithGaps.dart';
 
 enum TabPosition {
   top,
@@ -107,26 +108,28 @@ class _TabsState extends State<Tabs> {
   }
 
   Widget _renderTabItem() {
-    if (widget.tabPosition == TabPosition.top) {
-      return Row(children: _renderTabItemInner());
-    }
-    return Column(children: [Column(children: _renderTabItemInner())]);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 8, 8, 16),
+      child: FlexWithGaps(
+        direction: widget.tabPosition == TabPosition.top
+            ? Axis.horizontal
+            : Axis.vertical,
+        children: _renderTabItemInner(),
+      ),
+    );
   }
 
   Widget _runderTabWithPosition() {
     bool tabAtTop = widget.tabPosition == TabPosition.top;
     return Container(
         padding: widget.padding,
-        child: tabAtTop
-            ? Column(
-                children: [
-                  Flexible(flex: 0, child: _renderTabItem()),
-                  widget.pages,
-                ],
-              )
-            : Row(children: [
-                Flexible(flex: 0, child: _renderTabItem()),
-                widget.pages
-              ]));
+        child: FlexWithGaps(
+          direction: tabAtTop ? Axis.vertical : Axis.horizontal,
+          gap: 0,
+          children: [
+            Flexible(flex: 0, child: _renderTabItem()),
+            widget.pages,
+          ],
+        ));
   }
 }

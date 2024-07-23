@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tv_flutter/pages/home.dart';
+import 'package:tv_flutter/pages/lives.dart';
 import 'package:tv_flutter/widgets/cctv.dart';
 import 'package:tv_flutter/widgets/lineShadow.dart';
 import 'package:tv_flutter/widgets/Tabs.dart';
@@ -63,6 +64,9 @@ class _HomepageState extends State<Homepage> {
       }
     } else if (TabTitle.values[index] == TabTitle.cctv) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => CCTV()));
+      return;
+    } else if (TabTitle.values[index] == TabTitle.live) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Lives()));
       return;
     }
     setState(() {
