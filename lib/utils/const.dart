@@ -18,7 +18,10 @@ class defaultSysCfg {
   String weatherAddr;
 
   defaultSysCfg(
-      {this.playAddr = 'https://盒子迷.top/禁止贩卖', this.weatherAddr = '北京'});
+      {this.playAddr =
+          // 原地址因 flutter 不能访问中文域名而弃用，使用复制后的文件
+          'https://raw.githubusercontent.com/qiphon/learn/master/docs/tv/tv_resource.json',
+      this.weatherAddr = '北京'});
 
   factory defaultSysCfg.fromJson(Map<String, dynamic> data) {
     if (!data.containsKey('weatherAddr') || !data.containsKey('playAddr')) {
