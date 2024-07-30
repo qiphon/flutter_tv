@@ -20,7 +20,7 @@ class defaultSysCfg {
   defaultSysCfg(
       {this.playAddr =
           // 原地址因 flutter 不能访问中文域名而弃用，使用复制后的文件
-          'https://raw.githubusercontent.com/qiphon/learn/master/docs/tv/tv_resource.json',
+          'https://blog.qifeng.site/st/tv_resource.json',
       this.weatherAddr = '北京'});
 
   factory defaultSysCfg.fromJson(Map<String, dynamic> data) {

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tv_flutter/api/index.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -10,6 +12,7 @@ import 'pages/home.dart';
 void main() async {
   // runApp(const App());
   runZonedGuarded(() async {
+    GetStorage.init();
     WidgetsFlutterBinding.ensureInitialized();
     FlutterError.onError = (
       details,
@@ -18,7 +21,7 @@ void main() async {
       log('$details');
     };
     addRequestCatch();
-    return runApp(const App());
+    return runApp(const GetMaterialApp(home: App()));
   }, (err, stack) async {
     log('err ----- runZonedGuarded');
     log('$err');
