@@ -94,6 +94,7 @@ class _Lives extends State<Lives> {
 
   @override
   Widget build(BuildContext context) {
+    final menuWidth = MediaQuery.of(context).size.width / 4;
     return Scaffold(
       body: Container(
           color: Colors.black,
@@ -127,13 +128,14 @@ class _Lives extends State<Lives> {
                                 ? const SizedBox()
                                 : Row(
                                     children: [
-                                      _renderCategoryAndChannel(MenuType.first),
+                                      _renderCategoryAndChannel(
+                                          MenuType.first, menuWidth),
                                       const SizedBox(
                                         width: 2,
                                       ),
                                       _renderCategoryAndChannel(
-                                          MenuType.second),
-                                      _renderUrlSource(),
+                                          MenuType.second, menuWidth),
+                                      _renderUrlSource(menuWidth),
                                     ],
                                   ),
                           )),
@@ -179,7 +181,7 @@ class _Lives extends State<Lives> {
     });
   }
 
-  Widget _renderUrlSource() {
+  Widget _renderUrlSource(double menuWidth) {
     if (selectChannel == null || selectChannel!.groupName != activeCateName) {
       return SizedBox();
     } else {
@@ -196,7 +198,7 @@ class _Lives extends State<Lives> {
       return GestureDetector(
           onTap: () {},
           child: Container(
-              width: 280,
+              width: menuWidth,
               color: const Color.fromARGB(100, 0, 0, 0),
               height: double.infinity,
               child: ListView(
@@ -204,7 +206,7 @@ class _Lives extends State<Lives> {
     }
   }
 
-  Widget _renderCategoryAndChannel(MenuType menuType) {
+  Widget _renderCategoryAndChannel(MenuType menuType, double menuWidth) {
     List<Widget> menuItem = [];
     List<String> categorys =
         categoryMaps != null ? categoryMaps!.keys.toList() : [];
@@ -227,7 +229,7 @@ class _Lives extends State<Lives> {
     return GestureDetector(
         onTap: () {},
         child: Container(
-            width: 280,
+            width: menuWidth,
             color: const Color.fromARGB(100, 0, 0, 0),
             height: double.infinity,
             child:
