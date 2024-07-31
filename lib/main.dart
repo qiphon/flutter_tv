@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:tv_flutter/api/feedback.dart';
 import 'package:tv_flutter/api/index.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -19,6 +20,10 @@ void main() async {
     ) {
       log('err ----- onError');
       log('$details');
+      FeedbackErr.uploadString('''onError:  
+       exception is ${details.exceptionAsString()}
+       library is ${details.library}
+       stack is ${details.stack}''');
     };
     addRequestCatch();
     return runApp(const GetMaterialApp(home: App()));
@@ -26,6 +31,7 @@ void main() async {
     log('err ----- runZonedGuarded');
     log('$err');
     log(stack.toString());
+    FeedbackErr.uploadString('runZonedGuarded error: $err' + stack.toString());
   });
 }
 
