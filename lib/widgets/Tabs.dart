@@ -88,7 +88,7 @@ class _TabsState extends State<Tabs> {
           onTap: () => _onTabChange(index),
           child: Flex(
             direction: widget.tabPosition == TabPosition.top
-                ? Axis.vertical
+                ? Axis.horizontal
                 : Axis.horizontal,
             children: [
               Icon(

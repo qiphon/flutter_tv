@@ -84,15 +84,20 @@ class _HomepageState extends State<Homepage> {
           Expanded(
               child: Tabs(
                   activeTab: _activeTab,
-                  iconSize: 40,
+                  iconSize: 20,
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   tabSpace: 130,
                   onTabChange: _onTabChange,
-                  pages: const Expanded(
+                  pages: Expanded(
                       child: SizedBox(
                     width: double.infinity,
                     height: double.infinity,
                     child: LineShadow(
-                        shadowDirection: Direction.top, child: WeatherWidget()),
+                        shadowDirection: Direction.top,
+                        child: SingleChildScrollView(
+                            child: Container(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: const WeatherWidget()))),
                   )),
                   tabs: [
                 TabItem(
