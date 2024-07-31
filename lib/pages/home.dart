@@ -1,5 +1,6 @@
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tv_flutter/api/lives.dart';
 import 'package:tv_flutter/pages/homePage.dart';
 import 'package:tv_flutter/pages/settings.dart';
@@ -24,6 +25,8 @@ class _HomeWithNavState extends State<HomeWithNav> {
   void initState() {
     super.initState();
     Channel.getAllValues();
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
 
     setState(() {
       isCanQuit = false;
